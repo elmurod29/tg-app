@@ -29,14 +29,13 @@
     <div class="status" id="statusText">Осталось попыток: 1</div>
 
     <script>
-        let tg = window.Telegram.WebApp;
-        tg.expand(); // Развернуть на весь экран
+    let tg = window.Telegram.WebApp;
+    tg.expand(); 
 
-        function getAccess() {
-            // Отправляем данные обратно боту
-            tg.sendData("action_get_test");
-            document.getElementById("statusText").innerText = "Запрос отправлен...";
-        }
-    </script>
-</body>
-</html>
+    function getAccess() {
+        // Отправляем данные боту
+        tg.sendData("action_get_test");
+        // Закрываем окно, чтобы пользователь увидел сообщение от бота
+        tg.close();
+    }
+</script>
