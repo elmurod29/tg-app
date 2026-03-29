@@ -1,77 +1,47 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta charset="UTF-8">
+    <title>SafeTunnel Test</title>
+    <script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"></script>
+    <script>
+        var vConsole = new window.VConsole();
+    </script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body { background: #121212; color: white; font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 70px; }
-        .page { display: none; padding: 20px; animation: fadeIn 0.3s; }
-        .active { display: block; }
-        .card { background: #1e1e1e; border-radius: 12px; padding: 15px; margin-bottom: 15px; border: 1px solid #333; }
-        .btn { background: #0088cc; color: white; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; }
-        .nav { position: fixed; bottom: 0; width: 100%; background: #1e1e1e; display: flex; border-top: 1px solid #333; }
-        .nav-item { flex: 1; padding: 15px; text-align: center; font-size: 12px; color: #888; }
-        .nav-item.active { color: #0088cc; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        body { font-family: sans-serif; background: #1a1a1a; color: white; text-align: center; padding: 20px; }
+        .btn { background: #0088cc; color: white; border: none; padding: 15px 30px; border-radius: 10px; font-size: 18px; cursor: pointer; }
     </style>
 </head>
 <body>
-
-    <div id="main" class="page active">
+    <div id="main">
         <h2>SafeTunnel</h2>
-        <div class="card">
-            <h3>🎁 Пробный период</h3>
-            <p>Получите 3 дня бесплатного доступа прямо сейчас.</p>
-            <button class="btn" onclick="send('action_get_test')">Забрать тест</button>
-        </div>
-    </div>
-
-    <div id="plans" class="page">
-        <h2>Тарифы</h2>
-        <div class="card">
-            <h3>⭐ 30 дней доступа</h3>
-            <p>Безлимитный трафик, 100 Мбит/с</p>
-            <button class="btn" onclick="send('action_buy_30')">Купить за 3.0 USDT</button>
-        </div>
-    </div>
-
-    <div id="profile" class="page">
-        <h2>Мой профиль</h2>
-        <div class="card">
-            <p id="user-id">Загрузка...</p>
-            <button class="btn" onclick="send('action_get_profile')">Обновить данные</button>
-        </div>
-    </div>
-
-    <div class="nav">
-        <div class="nav-item active" onclick="showPage('main', this)">🏠 Главная</div>
-        <div class="nav-item" onclick="showPage('plans', this)">💎 Тарифы</div>
-        <div class="nav-item" onclick="showPage('profile', this)">👤 Профиль</div>
+        <button class="btn" onclick="send('action_get_test')">🎁 Получить тест</button>
     </div>
 
     <script>
         let tg = window.Telegram.WebApp;
-tg.expand();
+        tg.expand();
 
-// Функция для получения параметров из ссылки
-const urlParams = new URLSearchParams(window.location.search);
-const hasKey = urlParams.get('hasKey');
+        const urlParams = new URLSearchParams(window.location.search);
+        const hasKey = urlParams.get('hasKey');
 
-// Если ключ уже есть, скрываем блок с тестом
-if (hasKey === 'true') {
-    document.getElementById('main').innerHTML = `
-        <h2>SafeTunnel</h2>
-        <div class="card" style="border-color: #0088cc;">
-            <h3>✅ Доступ активен</h3>
-            <p>Ваш тестовый период уже запущен. Проверьте данные в разделе "Профиль".</p>
-        </div>
-    `;
-}
+        if (hasKey === 'true') {
+            document.getElementById('main').innerHTML = "<h3>✅ Доступ уже активен</h3>";
+        }
 
-function send(action) {
-    tg.sendData(action);
-    tg.close();
-}
+        function send(action) {
+            console.log("Пытаюсь отправить действие: " + action);
+            try {
+                // Пытаемся отправить данные в бот
+                tg.sendData(action);
+                console.log("Данные отправлены успешно!");
+                tg.close();
+            } catch (e) {
+                console.error("Ошибка при отправке: " + e);
+                alert("Ошибка! Проверьте, что открыли через нижнюю кнопку.");
+            }
         }
     </script>
+</body>
+</html>
